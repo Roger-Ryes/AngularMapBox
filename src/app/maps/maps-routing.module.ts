@@ -1,0 +1,22 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { FullScreenComponent } from './pages/full-screen/full-screen.component';
+import { MarkersComponent } from './pages/markers/markers.component';
+import { PropertiesComponent } from './pages/properties/properties.component';
+import { ZoonRangeComponent } from './pages/zoon-range/zoon-range.component';
+
+const routes: Routes = [
+  {path: "", children:[
+    {path:"fullscreen", component: FullScreenComponent},
+    {path:"marcadores", component: MarkersComponent},
+    {path:"propiedades", component: PropertiesComponent},
+    {path:"zoom-range", component: ZoonRangeComponent},
+    {path:"**", redirectTo: "fullscreen"}
+  ]}
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class MapsRoutingModule { }
