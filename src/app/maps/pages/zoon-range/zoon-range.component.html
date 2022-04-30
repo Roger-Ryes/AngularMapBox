@@ -1,1 +1,18 @@
-<p>zoon-range works!</p>
+<!-- #map, referencia local -->
+<div #mapZoom class="mapContainer"></div>
+
+<div class="row">
+    <div class="col-12">
+        <label class="form-label">
+            Zoom: 16
+            - Lng, Lat [123, 456]
+        </label>
+        <input type="range" class="form-range" id="customRange1">
+    </div>
+    <div class="col-12">
+        <button class="btn btn-primary" 
+                (click)="zoomOut()"> - </button>
+        <button class="btn btn-primary float-end" 
+                (click)="zoomIn()"> + </button>
+    </div>
+</div>

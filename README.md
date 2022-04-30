@@ -32,4 +32,48 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 https://getbootstrap.com/docs/5.1/getting-started/introduction/
 
 - Mapbox
-https://account.mapbox.com/access-tokens# AngularMapBox
+https://account.mapbox.com/access-tokens
+
+# AngularMapBox
+## Mapboxgl
+Import en TS
+
+    import * as mapboxgl from 'mapbox-gl';
+
+
+    ngOnInit(): void {
+        (mapboxgl as any).accessToken = environment.mapboxToken;  
+
+        var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [-78.48124797222665, -0.17664900227245092],
+        zoom: 18
+    });
+
+En el archivo html
+
+    <div id="map"></div>
+
+## Mapboxgl con referencia
+En el archivo html
+
+    <div #mapZoom class="mapContainer"></div>
+
+En el archivo TS
+
+    // Se usa el lifecycle tipo: "AfterViewInit"
+    export class ZoonRangeComponent implements AfterViewInit {
+
+        @ViewChild("mapZoom") divMap!: ElementRef; // Se llama a la referencia
+        private mapZoom!: mapboxgl.Map;
+
+        ngAfterViewInit(): void {
+            this.mapZoom = new mapboxgl.Map({
+            container: this.divMap.nativeElement,
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [-78.48124797222665, -0.17664900227245092],
+            zoom: 18
+            });
+        }    
+    }
