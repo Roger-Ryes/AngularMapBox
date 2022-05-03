@@ -9,30 +9,55 @@ import * as mapboxgl from 'mapbox-gl'
         top: 0;
         bottom: 0;
         width: 100%;
-      }
+    }
+
+    .list-group{
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 99;      
+    }
+    li {
+      cursor: pointer;
+    }
   `]
 })
 export class MarkersComponent implements AfterViewInit {
 
   @ViewChild('mapMarker') mapMarker!: ElementRef;
   center: [number, number] = [-78.48124797222665, -0.17664900227245092];
-
+  map!: mapboxgl.Map;
 
   constructor() { }
   ngAfterViewInit(): void {
-        const map = new mapboxgl.Map({
+        this.map = new mapboxgl.Map({
         container: this.mapMarker.nativeElement,
         style: 'mapbox://styles/mapbox/light-v10',
         center: this.center,
         zoom: 3
       });
   
-      const marker = new mapboxgl.Marker({
-        color: "#333",
-        draggable: true
-      })
-      .setLngLat(this.center)
-      .addTo(map);
+      // const marker = new mapboxgl.Marker({
+      //   color: "#333",
+      //   draggable: true
+      // })
+      // .setLngLat(this.center)
+      // .addTo(map);
+  }
+
+  addMarker(){
+    // Hexadecimal aleatorio
+    const color = "#xxxxxx".replace(/x/g, y=>(Math.random()*16|0).toString(16));
+    const newMarker = new mapboxgl.Marker({
+      color: color,
+      draggable: true
+    })
+    .setLngLat(this.center)
+    .addTo(this.map);
+  }
+
+  goToMarker(){
+
   }
 
 }
