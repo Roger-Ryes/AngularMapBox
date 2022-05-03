@@ -32,7 +32,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 https://getbootstrap.com/docs/5.1/getting-started/introduction/
 
 - Mapbox
-https://account.mapbox.com/access-tokens
+https://docs.mapbox.com/mapbox-gl-js/guides/
 
 # AngularMapBox
 ## Mapboxgl
