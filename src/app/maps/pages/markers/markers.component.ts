@@ -3,7 +3,8 @@ import * as mapboxgl from 'mapbox-gl'
 
 interface customMarker{
   color: string,
-  marker: mapboxgl.Marker
+  marker?: mapboxgl.Marker,
+  center?: [number, number]
 }
 @Component({
   selector: 'app-markers',
@@ -37,6 +38,7 @@ export class MarkersComponent implements AfterViewInit {
   markers: customMarker[]=[];
 
   constructor() { }
+ 
   ngAfterViewInit(): void {
         this.map = new mapboxgl.Map({
         container: this.mapMarker.nativeElement,
@@ -44,7 +46,7 @@ export class MarkersComponent implements AfterViewInit {
         center: this.center,
         zoom: 3
       });
-  
+      this.readLocarStorage();
       // const marker = new mapboxgl.Marker({
       //   color: "#333",
       //   draggable: true
@@ -53,6 +55,7 @@ export class MarkersComponent implements AfterViewInit {
       // .addTo(map);
   }
 
+  
   addMarker(){
     // Hexadecimal aleatorio
     const color = "#xxxxxx".replace(/x/g, y=>(Math.random()*16|0).toString(16));
@@ -65,7 +68,9 @@ export class MarkersComponent implements AfterViewInit {
    
 
     this.markers.push({color, marker: newMarker});
+    this.saveMarkerLocalStorage();
   }
+
 
   goToMarker(mapMark: mapboxgl.Marker){
       this.map.flyTo({
@@ -73,4 +78,34 @@ export class MarkersComponent implements AfterViewInit {
       });
   }
 
+
+  saveMarkerLocalStorage(){
+    const markersToSave: customMarker[]=[];
+    this.markers.forEach(a=>{
+      const color = a.color;
+      const {lng, lat} = a.marker!.getLngLat();
+
+      markersToSave.push({ color: color, center: [lng, lat] })
+    })
+    localStorage.setItem(`Markers`, JSON.stringify(markersToSave));
+  }
+
+
+  readLocarStorage(){
+    if(!localStorage.getItem("Markers")){
+        return;   
+    }
+    const lngLatArr: customMarker[] =  JSON.parse(localStorage.getItem("Markers")!);
+    
+    lngLatArr.forEach((element) => {
+      const newMarker = new mapboxgl.Marker({
+        color: element.color,
+        draggable: true
+      }).setLngLat([Number(element.center?.[0]), Number(element.center?.[1])])
+      .addTo(this.map);
+      
+      this.markers.push({color: element.color, marker: newMarker});
+    });
+
+  }
 }
