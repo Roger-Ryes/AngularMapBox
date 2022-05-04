@@ -55,7 +55,7 @@ export class MarkersComponent implements AfterViewInit {
       // .addTo(map);
   }
 
-  
+  // Add Marker
   addMarker(){
     // Hexadecimal aleatorio
     const color = "#xxxxxx".replace(/x/g, y=>(Math.random()*16|0).toString(16));
@@ -69,16 +69,21 @@ export class MarkersComponent implements AfterViewInit {
 
     this.markers.push({color, marker: newMarker});
     this.saveMarkerLocalStorage();
+
+    // Detecta cuando se mueve el marcardor y lo guarda en el localstorage
+    newMarker.on("dragend", ()=>{
+      this.saveMarkerLocalStorage(); 
+    })
   }
 
-
+  // Go to Marker
   goToMarker(mapMark: mapboxgl.Marker){
       this.map.flyTo({
         center: mapMark.getLngLat()
       });
   }
 
-
+  // Save Marker
   saveMarkerLocalStorage(){
     const markersToSave: customMarker[]=[];
     this.markers.forEach(a=>{
@@ -90,7 +95,7 @@ export class MarkersComponent implements AfterViewInit {
     localStorage.setItem(`Markers`, JSON.stringify(markersToSave));
   }
 
-
+  // Read Marker
   readLocarStorage(){
     if(!localStorage.getItem("Markers")){
         return;   
@@ -105,7 +110,20 @@ export class MarkersComponent implements AfterViewInit {
       .addTo(this.map);
       
       this.markers.push({color: element.color, marker: newMarker});
-    });
 
+      // Detecta cuando se mueve el marcardor y lo guarda en el localstorage
+      newMarker.on("dragend", ()=>{
+        this.saveMarkerLocalStorage(); 
+      })
+    });
+  }
+
+  // Delete marker
+  deleteMarker(index: number){
+    // Delete of map
+    this.markers[index].marker?.remove();
+    // Delete of array
+    this.markers.splice(index, 1);
+    this.saveMarkerLocalStorage();
   }
 }
