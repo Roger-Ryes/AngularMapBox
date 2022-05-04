@@ -4,8 +4,10 @@
         + Agregar
     </li>
     <li class="list-group-item list-group-item-info"
-        (click)="goToMarker()">
-        Marker 1
+        (click)="goToMarker(item.marker)"
+        *ngFor="let item of markers; let i = index"
+        [ngStyle]="{'background': item.color}">
+        Marker {{i}}
     </li>
 </ul>
 
